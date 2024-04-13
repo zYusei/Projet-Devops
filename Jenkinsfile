@@ -13,10 +13,8 @@ pipeline {
         stage('Run Docker Containers') {
             steps {
                 script {
-                    {
-                        // Run docker compose up --build command
-                        sh 'docker compose up --build'
-                    }
+                    // Run docker compose up --build command
+                    sh 'docker compose up --build'
                 }
             }
         }
