@@ -13,9 +13,10 @@ pipeline {
         stage('Run Docker Containers') {
             steps {
                 script {
-                dir('/home/yusei/Downloads/PPE-Auto-Ecole-main/') {
-                    // Run docker compose up --build command
-                    sh 'docker-compose up --build -d'
+                    dir('/home/yusei/Downloads/PPE-Auto-Ecole-main/') {
+                        // Run docker compose up --build command
+                        sh 'docker-compose up --build -d'
+                    }
                 }
             }
         }
