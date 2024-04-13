@@ -33,6 +33,17 @@ pipeline {
                 // Add your deployment steps here
             }
         }
+        stage('Build Docker Compose') {
+            steps {
+                script {
+                    // Change directory to where your docker-compose.yml file is located
+                    dir('/home/yusei/Downloads/PPE-Auto-Ecole-main/') {
+                        // Run docker compose up --build command
+                        sh 'docker compose up --build'
+                    }
+                }
+            }
+        }
     }
     post {
         always {
