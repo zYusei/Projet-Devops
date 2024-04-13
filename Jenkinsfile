@@ -22,11 +22,4 @@ pipeline {
         }
         // Add other stages as needed
     }
-    post {
-        always {
-            // Clean up Docker resources
-            cleanWs()
-            sh 'docker-compose down'
-        }
-    }
 }
