@@ -14,10 +14,10 @@ pipeline {
             steps {
                 script {
                     // Start Docker database container
-                    def dbContainer = docker.image('mysql:5.7').withRun('-e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=autoecole --name ppe-auto-ecole-main-db') 
+                    def dbContainer = docker.image('mysql:5.7').run('-e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=autoecole --name ppe-auto-ecole-main-db') 
 
                     // Start Docker web container linked to database container
-                    docker.image("projet_devops:latest").withRun('-p 8081:80 --name ppe-auto-ecole-main-web --link ppe-auto-ecole-main-db:mysql') { c ->
+                    docker.image("projet_devops:latest").run('-p 8081:80 --name ppe-auto-ecole-main-web --link ppe-auto-ecole-main-db:mysql') { c ->
                         // Wait until the container is ready
                         sh 'while ! curl -sSf http://localhost:8081 >/dev/null; do sleep 1; done'
                     }
