@@ -1,13 +1,23 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_IMAGE = "monsitecrypto:${env.BUILD_ID}"
-    }
+
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build(env.DOCKER_IMAGE)
+                    // Construire l'image Docker
+                    docker.build("projet_devops:latest")
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Démarrer les conteneurs Docker
+                    docker.image("projet_devops:latest").withRun('-p 8081:80 --name projet_devops --link db:mysql') { c ->
+                        // Attendre que le conteneur soit prêt
+                        sh 'while ! curl -sSf http://localhost:8081 >/dev/null; do sleep 1; done'
+                    }
                 }
             }
         }
@@ -20,8 +30,16 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
-
+                
             }
+        }
+    }
+    post {
+        always {
+            // Nettoyer les ressources Docker
+            cleanWs()
+            sh 'docker stop projet_devops || true'
+            sh 'docker rm projet_devops || true'
         }
     }
 }
