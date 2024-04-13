@@ -41,5 +41,9 @@ pipeline {
             echo 'Pipeline failed!'
             // Add any failure steps here
         }
+        always {
+            // Clean up Docker resources
+            sh 'docker-compose down'
+        }
     }
 }
