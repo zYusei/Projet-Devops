@@ -14,11 +14,20 @@ pipeline {
             steps {
                 script {
                     // Run docker compose up --build command
-                    sh 'docker compose up --build'
+                    sh 'docker compose up --build -d'
                 }
             }
         }
-        // Add other stages as needed
+        stage('Run Tests') {
+            steps {
+                echo 'Running tests...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
     }
     post {
         always {
