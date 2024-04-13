@@ -21,13 +21,13 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running tests...'
-                // Add your test commands here
+
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
-                // Add your deployment commands here
+
             }
         }
     }
@@ -35,14 +35,14 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
-            // Add any success steps here
+
         }
         failure {
             echo 'Pipeline failed!'
-            // Add any failure steps here
+
         }
         always {
-            // Clean up Docker resources
+
             sh 'docker-compose down'
         }
     }
