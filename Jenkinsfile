@@ -5,7 +5,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image with the correct name.
+                    // Build Docker image with the correct name
                     docker.build("projet_devops:latest")
                 }
             }
