@@ -11,3 +11,4 @@ COPY sql/dump.sql /docker-entrypoint-initdb.d/dump.sql
 
 # Exposer le port 80 pour accéder à l'application via le navigateur
 EXPOSE 80
+
