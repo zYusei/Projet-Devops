@@ -3,7 +3,7 @@ pipeline {
 
     stages {
         stage('Build Docker Image') {
-            steps {   
+            steps { 
                 script {
                     // Build Docker image with the correct name
                     docker.build("projet_devops:latest")
