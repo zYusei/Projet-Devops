@@ -1,3 +1,13 @@
+def ec2Instance = [ 
+    credentialsId: 'aws',
+    remote: [
+        name: 'ec2-instance',
+        host: '35.180.192.24',
+        user: 'ubuntu',
+        allowAnyHosts: true
+    ]
+]
+
 pipeline {
     agent any
 
@@ -67,13 +77,3 @@ pipeline {
         }
     }
 }
-
-def ec2Instance = [ 
-    credentialsId: 'aws',
-    remote: [
-        name: 'ec2-instance',
-        host: '35.180.192.24',
-        user: 'ubuntu',
-        allowAnyHosts: true
-    ]
-]
