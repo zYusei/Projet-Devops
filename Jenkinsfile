@@ -10,19 +10,19 @@ pipeline {
                 }
             }
         }
-        stage('Push Docker Image to Docker Hub') {
-            steps {
+        stage('Build and push Docker Image') {
+            steps { 
                 script {
-                    // Login to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        // Push Docker image to Docker Hub
-                        docker.image("projet_devops:latest").push("latest")
+                    // Build and push Docker image with the correct name
+                    docker.withRegistry('https://index.docker.io/v1/', '2f413927-dcc6-4201-9a21-521075172e4d') {
+                        def customImage = docker.build("zYuseiii/projet-devops:latest")
+                        customImage.push()
                     }
                 }
             }
         }
         stage('Run Docker Containers') {
-            steps {
+            steps {docker push zyuseiii/projet_devops:tagname
                 script {
                     // Run docker compose up --build command
                     sh 'docker compose up --build -d'
