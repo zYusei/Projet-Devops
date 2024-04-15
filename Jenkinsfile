@@ -80,7 +80,7 @@ pipeline {
         }
         always {
             // Execute cleanup steps within a node block
-            node('any') {
+            node('') {
                 // Execute shell commands here
                 sh 'docker-compose down'
             }
