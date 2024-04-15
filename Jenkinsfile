@@ -1,19 +1,5 @@
-def ec2Instance = [ 
-    credentialsId: 'aws',
-    remote: [
-        name: 'ec2-instance',
-        host: '35.180.192.24',
-        user: 'ubuntu',
-        allowAnyHosts: true
-    ]
-]
-
 pipeline {
     agent any
-
-    environment {
-        AWS_CREDENTIALS = credentials('aws')
-    }
 
     stages {
         stage('Checkout SCM') {
@@ -55,20 +41,6 @@ pipeline {
                 // Add your test execution steps here
             }
         }
-        stage('Deploy to EC2') {
-            steps {
-                // SSH into EC2 instance using AWS credentials
-                script {
-                    sshCommand remote: ec2Instance, credentialsId: 'aws', command: '''
-                        # Copy project files to EC2 instance
-                        scp -r /home/yusei/Downloads/Projet-Devops ubuntu@ec2-instance:/home/ubuntu
-
-                        # Execute deployment script on EC2 instance
-                        ssh ubuntu@ec2-instance 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
-                    '''
-                }
-            }
-        }
     }
 
     post {
@@ -78,9 +50,7 @@ pipeline {
         failure {
             echo 'Pipeline failed!'
         }
-        always {
-            // Execute cleanup steps within a node block
-            node('') {
+        always { {
                 // Execute shell commands here
                 sh 'docker-compose down'
             }
