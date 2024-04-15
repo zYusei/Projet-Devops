@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        AWS_CREDENTIALS = credentials('aws')
+    }
+
     stages {
         stage('Build Docker Image') {
             steps { 
@@ -35,10 +39,18 @@ pipeline {
                 // Add your test execution steps here
             }
         }
-        stage('Deploy') {
+        stage('Deploy to EC2') {
             steps {
-                echo 'Deploying...'
-                // Add your deployment steps here
+                // SSH into EC2 instance using AWS credentials
+                script {
+                    sshCommand remote: ec2Instance, credentials: AWS_CREDENTIALS, command: '''
+                        # Copy project files to EC2 instance
+                        scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@ec2-instance:/home/ubuntu
+
+                        # Execute deployment script on EC2 instance
+                        ssh ubuntu@ec2-instance 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker compose up --build'
+                    '''
+                }
             }
         }
     }
@@ -55,3 +67,13 @@ pipeline {
         }
     }
 }
+
+def ec2Instance = [ 
+    credentialsId: 'aws',
+    remote: [
+        name: 'ec2-instance',
+        host: '35.180.192.24',
+        user: 'ubuntu',
+        allowAnyHosts: true
+    ]
+]
