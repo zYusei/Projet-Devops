@@ -1,6 +1,6 @@
 def ec2Instance = [
     name: 'ec2-instance',
-    host: '35.180.192.24',
+    host: '35.180.190.54',
     user: 'ubuntu',
     allowAnyHosts: true
 ]
@@ -53,8 +53,8 @@ pipeline {
             steps {
                 script {
                     sshCommand remote: ec2Instance, user: 'ubuntu', credentialsId: 'aws', command: '''
-                        scp -r /home/yusei/Downloads/Projet-Devops ubuntu@35.180.192.24:/home/ubuntu
-                        ssh ubuntu@35.180.192.24 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
+                        scp -r /home/yusei/Downloads/Projet-Devops ubuntu@35.180.190.54:/home/ubuntu
+                        ssh ubuntu@35.180.190.54 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
                     '''
                 }
             }
