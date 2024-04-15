@@ -15,7 +15,7 @@ pipeline {
                 script {
                     // Build and push Docker image with the correct name
                     docker.withRegistry('https://index.docker.io/v1/', '2f41392713927-dcc6-4201-9a21-521075172e4d') {
-                        def customImage = docker.build("zyuseiii/projetdevops:latest")
+                        def customImage = docker.build("zyuseiii/projet_devops:latest")
                         customImage.push()
                     }
                 }
