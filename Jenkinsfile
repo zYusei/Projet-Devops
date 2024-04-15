@@ -39,7 +39,7 @@ pipeline {
             steps { 
                 script {
                     // Run docker compose up --build command
-                    sh 'docker compose up --build -d'
+                    sh 'docker-compose up --build -d'
                 }
             }
         }
@@ -55,10 +55,10 @@ pipeline {
                 script {
                     sshCommand remote: ec2Instance, credentialsId: 'aws', command: '''
                         # Copy project files to EC2 instance
-                        scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@ec2-instance:/home/ubuntu
+                        scp -r /home/yusei/Downloads/Projet-Devops ubuntu@ec2-instance:/home/ubuntu
 
                         # Execute deployment script on EC2 instance
-                        ssh ubuntu@ec2-instance 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker compose up --build'
+                        ssh ubuntu@ec2-instance 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
                     '''
                 }
             }
