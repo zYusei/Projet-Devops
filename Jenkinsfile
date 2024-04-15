@@ -16,6 +16,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout SCM') {
+            steps {
+                // Use the credentialsId you obtained while adding the credentials in Jenkins
+                git credentialsId: 'github', url: 'https://github.com/zYusei/Projet-Devops.git'
+            }
+        }
         stage('Build Docker Image') {
             steps { 
                 script {
@@ -74,7 +80,7 @@ pipeline {
         }
         always {
             // Execute cleanup steps within a node block
-            node('') {
+            node {
                 // Execute shell commands here
                 sh 'docker-compose down'
             }
