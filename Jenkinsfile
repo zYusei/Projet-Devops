@@ -1,17 +1,29 @@
+def ec2Instance = [ 
+    credentialsId: 'aws',
+    remote: [
+        name: 'ec2-instance',
+        host: '35.180.192.24',
+        user: 'ubuntu',
+        allowAnyHosts: true
+    ]
+]
+
 pipeline {
     agent any
+
+    environment {
+        AWS_CREDENTIALS = credentials('aws')
+    }
 
     stages {
         stage('Checkout SCM') {
             steps {
-                // Use the credentialsId you obtained while adding the credentials in Jenkins
                 git branch: 'main', credentialsId: 'github', url: 'https://github.com/zYusei/Projet-Devops.git'
             }
         }
         stage('Build Docker Image') {
             steps { 
                 script {
-                    // Build Docker image with the correct name
                     docker.build("projet_devops:latest")
                 }
             }
@@ -30,7 +42,6 @@ pipeline {
         stage('Run Docker Containers') {
             steps { 
                 script {
-                    // Run docker compose up --build command
                     sh 'docker-compose up --build -d'
                 }
             }
@@ -41,7 +52,17 @@ pipeline {
                 // Add your test execution steps here
             }
         }
-    } 
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    sshCommand remote: ec2Instance, credentialsId: 'aws', command: '''
+                        scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@ec2-instance:/home/ubuntu
+                        ssh ubuntu@ec2-instance 'cd /home/yusei/Downloads/PPE-Auto-Ecole-main && docker-compose up --build'
+                    '''
+                }
+            }
+        }
+    }
 
     post {
         success {
@@ -51,7 +72,6 @@ pipeline {
             echo 'Pipeline failed!'
         }
         always {
-            // Execute shell commands here
             sh 'docker-compose down'
         }
     }
