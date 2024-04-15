@@ -1,11 +1,8 @@
-def ec2Instance = [ 
-    credentialsId: 'aws',
-    remote: [
-        name: 'ec2-instance',
-        host: '35.180.192.24',
-        user: 'ubuntu',
-        allowAnyHosts: true
-    ]
+def ec2Instance = [
+    name: 'ec2-instance',
+    host: '35.180.192.24',
+    user: 'ubuntu',
+    allowAnyHosts: true
 ]
 
 pipeline {
@@ -22,14 +19,14 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
-            steps { 
+            steps {
                 script {
                     docker.build("projet_devops:latest")
                 }
             }
         }
         stage('Build and push Docker Image') {
-            steps { 
+            steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker', toolName:'docker') {
                         sh "docker build -t projet_devops ."
@@ -40,7 +37,7 @@ pipeline {
             }
         }
         stage('Run Docker Containers') {
-            steps { 
+            steps {
                 script {
                     sh 'docker-compose up --build -d'
                 }
@@ -55,9 +52,9 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
-                    sshCommand remote: ec2Instance, credentialsId: 'aws', command: '''
-                        scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@ec2-instance:/home/ubuntu
-                        ssh ubuntu@ec2-instance 'cd /home/yusei/Downloads/PPE-Auto-Ecole-main && docker-compose up --build'
+                    sshCommand remote: ec2Instance, user: 'ubuntu', credentialsId: 'aws', command: '''
+                        scp -r /home/yusei/Downloads/Projet-Devops ubuntu@35.180.192.24:/home/ubuntu
+                        ssh ubuntu@35.180.192.24 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
                     '''
                 }
             }
