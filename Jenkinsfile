@@ -53,7 +53,7 @@ pipeline {
             steps {
                 // SSH into EC2 instance using AWS credentials
                 script {
-                    sshCommand remote: ec2Instance, credentials: AWS_CREDENTIALS, command: '''
+                    sshCommand remote: ec2Instance, credentialsId: 'aws', command: '''
                         # Copy project files to EC2 instance
                         scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@ec2-instance:/home/ubuntu
 
