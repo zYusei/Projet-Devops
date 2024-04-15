@@ -13,10 +13,13 @@ pipeline {
         stage('Build and push Docker Image') {
             steps { 
                 script {
-                    // Build and push Docker image with the correct name
-                    docker.withRegistry('https://index.docker.io/v1/', '2f41392713927-dcc6-4201-9a21-521075172e4d') {
-                        def customImage = docker.build("zyuseiii/projet_devops:latest")
-                        customImage.push()
+                        withDockerRegistry(credentialsId: 'docker', toolName:'docker')  {
+                            sh "docker build -t projet_devops ."
+
+                            sh "docker tag projet_devops zyuseiii/projet_devops:latest"
+
+                            sh "docker push zyuseiii/projet_devops:latest"
+                        }
                     }
                 }
             }
