@@ -10,6 +10,17 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    // Login to Docker Hub
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                        // Push Docker image to Docker Hub
+                        docker.image("projet_devops:latest").push("latest")
+                    }
+                }
+            }
+        }
         stage('Run Docker Containers') {
             steps {
                 script {
