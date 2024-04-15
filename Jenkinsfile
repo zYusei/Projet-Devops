@@ -54,7 +54,7 @@ pipeline {
                 script {
                     sshCommand remote: ec2Instance, user: 'ubuntu', credentialsId: 'aws', command: '''
                         scp -r /home/yusei/Downloads/Projet-Devops ubuntu@35.180.190.54:/home/ubuntu
-                        ssh -vvv ubuntu@35.180.190.54 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
+                        ssh ubuntu@35.180.190.54 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
                     '''
                 }
             }
