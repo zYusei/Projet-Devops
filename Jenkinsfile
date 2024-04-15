@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 // Use the credentialsId you obtained while adding the credentials in Jenkins
-                git credentialsId: 'github', url: 'https://github.com/zYusei/Projet-Devops.git'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/zYusei/Projet-Devops.git'
             }
         }
         stage('Build Docker Image') {
