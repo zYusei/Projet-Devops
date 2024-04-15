@@ -22,7 +22,7 @@ pipeline {
             }
         }
         stage('Run Docker Containers') {
-            steps {docker push zyuseiii/projet_devops:tagname
+            steps { 
                 script {
                     // Run docker compose up --build command
                     sh 'docker compose up --build -d'
