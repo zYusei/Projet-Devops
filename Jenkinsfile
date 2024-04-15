@@ -73,7 +73,11 @@ pipeline {
             echo 'Pipeline failed!'
         }
         always {
-            sh 'docker-compose down'
+            // Execute cleanup steps within a node block
+            node {
+                // Execute shell commands here
+                sh 'docker-compose down'
+            }
         }
     }
 }
