@@ -13,13 +13,10 @@ pipeline {
         stage('Build and push Docker Image') {
             steps { 
                 script {
-                        withDockerRegistry(credentialsId: 'docker', toolName:'docker')  {
-                            sh "docker build -t projet_devops ."
-
-                            sh "docker tag projet_devops zyuseiii/projet_devops:latest"
-
-                            sh "docker push zyuseiii/projet_devops:latest"
-                        }
+                    withDockerRegistry(credentialsId: 'docker', toolName:'docker') {
+                        sh "docker build -t projet_devops ."
+                        sh "docker tag projet_devops zyuseiii/projet_devops:latest"
+                        sh "docker push zyuseiii/projet_devops:latest"
                     }
                 }
             }
