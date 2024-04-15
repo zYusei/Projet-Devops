@@ -43,17 +43,15 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
-        }
-        always { {
-                // Execute shell commands here
-                sh 'docker-compose down'
-            }
-        }
+post {
+    success {
+        echo 'Pipeline completed successfully!'
+    }
+    failure {
+        echo 'Pipeline failed!'
+    }
+    always {
+        // Execute shell commands here
+        sh 'docker-compose down'
     }
 }
