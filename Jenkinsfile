@@ -50,15 +50,16 @@ pipeline {
                 script {
                     // Use SSH to transfer files to EC2 instance
                     sshagent(credentials: ['SSH-KEY']) {
-                        sh '''
-                            scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@35.180.190.54:/home/ubuntu
-                            ssh ubuntu@35.180.190.54 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker-compose up --build'
-                        '''
+                        sshKnownHosts(knownHosts: [ec2Instance.host]) {
+                            sh '''
+                                scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@35.180.190.54:/home/ubuntu
+                                ssh ubuntu@35.180.190.54 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker-compose up --build'
+                            '''
+                        }
                     }
                 }
             }
         }
-    }
 
     post {
         success {
