@@ -8,10 +8,6 @@ def ec2Instance = [
 pipeline {
     agent any
 
-    environment {
-        AWS_CREDENTIALS = credentials('aws')
-    }
-
     stages {
         stage('Checkout SCM') {
             steps {
@@ -52,9 +48,10 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
-                    sshCommand remote: ec2Instance, user: 'ubuntu', credentialsId: 'aws', command: '''
-                        scp -r /home/yusei/Downloads/Projet-Devops ubuntu@35.180.190.54:/home/ubuntu
-                        ssh ubuntu@35.180.190.54 'cd /home/yusei/Downloads/Projet-Devops && docker-compose up --build'
+                    // Use SSH to transfer files to EC2 instance
+                    sshCommand remote: ec2Instance, user: 'ubuntu', command: '''
+                        scp -i /home/yusei/Downloads/devops.pem -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@35.180.190.54:/home/ubuntu
+                        ssh -i /home/yusei/Downloads/devops.pem ubuntu@35.180.190.54 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker-compose up --build'
                     '''
                 }
             }
