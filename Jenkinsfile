@@ -1,10 +1,3 @@
-def ec2Instance = [
-    name: 'ec2-instance',
-    host: '35.180.190.54',
-    user: 'ubuntu',
-    allowAnyHosts: true
-]
-
 pipeline {
     agent any
 
