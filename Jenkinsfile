@@ -4,7 +4,7 @@ pipeline {
         stage('Example') {
             steps {
                 sshagent(credentials: ['SSH-KEY']) {
-                    sh 'ssh ubuntu@35.180.190.54 command'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@35.180.190.54 command'
                 }
             }
         }
