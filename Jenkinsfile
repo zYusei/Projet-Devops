@@ -51,8 +51,7 @@ pipeline {
                     // Execute commands on the EC2 instance
                     sshagent(credentials: ['SSH-KEY']) {
                         sh '''
-                            sudo scp -i /home/yusei/Downloads/devops.pem -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@35.180.190.54:/home/ubuntu/PPE-Auto-Ecole-Main
-                            ssh -o StrictHostKeyChecking=no ubuntu@35.180.190.54 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker-compose up --build -d'
+                            ssh -o StrictHostKeyChecking=no ubuntu@35.180.190.54 'cd /home/ubuntu/PPE-Auto-Ecole-main && sudo docker-compose up --build'
                         '''
                     }
                 }
