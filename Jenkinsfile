@@ -45,10 +45,17 @@ pipeline {
                 // Add your test execution steps here
             }
         }
-        stage('Deploy to EC2') {
+        stage('Connect to EC2') {
             steps {
                 script {
-                    // Use SSH to transfer files to EC2 instance
+                    def ec2Instance = [
+                        name: 'ec2-instance',
+                        host: '35.180.190.54',
+                        user: 'ubuntu',
+                        credentialsId: 'SSH-KEY' // Use the ID of your SSH credentials
+                    ]
+
+                    // Execute commands on the EC2 instance
                     sshagent(credentials: ['SSH-KEY']) {
                         sshKnownHosts(knownHosts: [ec2Instance.host]) {
                             sh '''
@@ -60,7 +67,7 @@ pipeline {
                 }
             }
         }
-    } // <--- Added closing bracket for the 'stages' block
+    }
 
     post {
         success {
