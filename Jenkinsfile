@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        SSH_DEBUG = "true"
+    }
     stages {
         stage('Example') {
             steps {
