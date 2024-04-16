@@ -7,7 +7,7 @@ pipeline {
         stage('Example') {
             steps {
                 sshagent(credentials: ['SSH-KEY']) {
-                    sh 'ssh ubuntu@35.180.190.54 command'
+                    sh 'ssh -i /home/yusei/Downloads/devops.pem ubuntu@35.180.190.54 command'
                 }
             }
         }
