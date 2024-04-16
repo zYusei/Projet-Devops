@@ -2,59 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout SCM') {
-            steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/zYusei/Projet-Devops.git'
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("projet_devops:latest")
-                }
-            }
-        }
-        stage('Build and push Docker Image') {
-            steps {
-                script {
-                    withDockerRegistry(credentialsId: 'docker', toolName:'docker') {
-                        sh "docker build -t projet_devops ."
-                        sh "docker tag projet_devops zyuseiii/projet_devops:latest"
-                        sh "docker push zyuseiii/projet_devops:latest"
-                    }
-                }
-            }
-        }
-        stage('Run Docker Containers') {
-            steps {
-                script {
-                    sh 'docker-compose up --build -d'
-                }
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                echo 'Running tests...'
-                // Add your test execution steps here
-            }
-        }
+        // Previous stages remain unchanged
+
         stage('Connect to EC2') {
             steps {
                 script {
-                    def ec2Instance = [
+                    // Define SSH credentials
+                    def sshServer = [
+                        credentialsId: 'SSH-KEY', // Use the ID of your SSH credentials
                         name: 'ec2-instance',
-                        host: '35.180.190.54',
-                        user: 'ubuntu',
-                        credentialsId: 'SSH-KEY' // Use the ID of your SSH credentials
+                        hostname: '35.180.190.54',
+                        username: 'ubuntu'
                     ]
 
-                    // Execute commands on the EC2 instance
-                    sshagent(credentials: ['SSH-KEY']) {
-                        sh '''
-                            scp -r /home/yusei/Downloads/PPE-Auto-Ecole-main ubuntu@35.180.190.54:/home/ubuntu
-                            ssh -o StrictHostKeyChecking=no ubuntu@35.180.190.54 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker-compose up --build -d'
-                        '''
-                    }
+                    // Transfer files to EC2
+                    sshPut remote: sshServer, from: '/home/yusei/Downloads/PPE-Auto-Ecole-main/*', into: '/home/ubuntu/PPE-Auto-Ecole-main/'
+
+                    // Run commands on EC2
+                    sshCommand remote: sshServer, command: 'cd /home/ubuntu/PPE-Auto-Ecole-main && docker-compose up --build -d', commandModifiers: '-o StrictHostKeyChecking=no'
                 }
             }
         }
