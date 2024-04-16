@@ -60,6 +60,7 @@ pipeline {
                 }
             }
         }
+    } // <--- Added closing bracket for the 'stages' block
 
     post {
         success {
