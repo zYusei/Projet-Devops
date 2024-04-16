@@ -35,7 +35,6 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running tests...'
-                // Add your test execution steps here
             }
         }
         stage('Deploy to EC2') {
@@ -45,7 +44,7 @@ pipeline {
                         name: 'ec2-instance',
                         host: '35.180.190.54',
                         user: 'ubuntu',
-                        credentialsId: 'SSH-KEY' // Use the ID of your SSH credentials
+                        credentialsId: 'SSH-KEY' // ID of SSH credentials
                     ]
 
                     // Execute commands on the EC2 instance
